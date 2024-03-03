@@ -1,7 +1,6 @@
 const express = require("express")
 const app = express();
 const cors = require('cors')
-
 app.use(express.json());
 
 app.use(
@@ -12,11 +11,8 @@ app.use(
   })
 );
 
-app.post('/getInfo', (req, res) => {
-  const url = req.body.url
-  console.log(url)
-  res.json("sucess")
-})
+const infoRoutes = require('./routes/infoRoutes.js')
+app.use('/api/v1', infoRoutes)
 
 app.listen(4000, () => {
   console.log("server started on port 4000")
