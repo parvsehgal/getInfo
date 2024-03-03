@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer');
 
 async function getTitleFromYouTubeLink(link) {
   const browser = await puppeteer.launch({
@@ -6,16 +6,18 @@ async function getTitleFromYouTubeLink(link) {
   });
   const page = await browser.newPage();
   await page.goto(link);
-  const bookData = await page.evaluate(() => {
-    const bookpods = Array.from(document.querySelectorAll('.product_pod'))
-    const data = bookpods.map((book) => {
+  const headingData = await page.evaluate(() => {
+    const allElements = Array.from(document.querySelectorAll('.swiper-slide'))
+    const list = allElements.map((each) => {
       return ({
-        title: book.querySelector('h3 a').getAttribute('title')
+        title: each.querySelector('a span').innerText,
+        picUrl: each.querySelector('a img').getAttribute('src')
       })
     })
-    return data
+    return list
   })
-  console.log(bookData)
+  console.log(headingData)
+  await browser.close()
 }
 
 exports.getInfo = async (req, res) => {
